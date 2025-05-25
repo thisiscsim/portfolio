@@ -1,0 +1,216 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  /* Light theme colors (default) */
+  --bg-primary: #ffffff;
+  --bg-secondary: #f9f8f9;
+  --bg-tertiary: #f4f2f4;
+  --border-primary: #e9e8ea;
+  --text-primary: #282a30;
+  --text-secondary: #3c4149;
+  --text-tertiary: #6f6e77;
+
+  /* Scrollbar colors */
+  --scrollbar-track: transparent;
+  --scrollbar-thumb: rgba(106, 106, 106, 0.5);
+  --scrollbar-thumb-hover: rgba(106, 106, 106, 0.8);
+}
+
+.dark {
+  /* Dark theme colors */
+  --bg-primary: #08090a;
+  --bg-secondary: #1c1c1f;
+  --bg-tertiary: #232326;
+  --border-primary: #23252a;
+  --text-primary: #f7f8f8;
+  --text-secondary: #8a8f98;
+  --text-tertiary: #62666d;
+
+  /* Scrollbar colors for dark mode */
+  --scrollbar-track: transparent;
+  --scrollbar-thumb: rgba(150, 150, 150, 0.3);
+  --scrollbar-thumb-hover: rgba(150, 150, 150, 0.5);
+}
+
+/* Base styles */
+body {
+  min-height: 100vh;
+  margin: 0;
+  padding: 0;
+  font-size: 13px;
+  line-height: 22px;
+  letter-spacing: -0.3px;
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+  scroll-behavior: smooth;
+
+  /* Prevent layout shift from scrollbar */
+  overflow-y: scroll;
+  scrollbar-gutter: stable;
+}
+
+/* Hide scrollbar by default but reserve space for it */
+html {
+  /* Firefox */
+  scrollbar-width: thin;
+  scrollbar-color: transparent transparent;
+}
+
+/* For Chrome, Safari, and Edge */
+::-webkit-scrollbar {
+  width: 8px;
+  background-color: transparent;
+}
+
+::-webkit-scrollbar-track {
+  background-color: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: transparent;
+  border-radius: 4px;
+}
+
+/* Show scrollbar only when scrolling */
+body:hover::-webkit-scrollbar-thumb,
+body:focus::-webkit-scrollbar-thumb,
+body:focus-within::-webkit-scrollbar-thumb,
+body:active::-webkit-scrollbar-thumb {
+  background-color: var(--scrollbar-thumb);
+}
+
+body:hover::-webkit-scrollbar-thumb:hover {
+  background-color: var(--scrollbar-thumb-hover);
+}
+
+/* Firefox - show scrollbar only when hovering/scrolling */
+@supports (scrollbar-width: thin) {
+  html:hover,
+  html:focus-within,
+  html:active {
+    scrollbar-color: var(--scrollbar-thumb) transparent;
+  }
+}
+
+/* Additional CSS for scrollbar behavior */
+body.is-scrolling::-webkit-scrollbar-thumb {
+  background-color: var(--scrollbar-thumb);
+  transition: background-color 0.3s ease;
+}
+
+@supports (scrollbar-width: thin) {
+  body.is-scrolling {
+    scrollbar-color: var(--scrollbar-thumb) transparent;
+  }
+}
+
+/* Add a media query to respect user preferences for reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  html,
+  body {
+    scroll-behavior: auto;
+  }
+}
+
+/* Reset margins and paddings for navigation elements */
+ul,
+li {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+/* Ensure consistent box-sizing */
+* {
+  box-sizing: border-box;
+}
+
+/* Ensure links don't have default styles */
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+/* Dotted underline for links - always visible */
+.hover\:border-dotted /* Keep the class name for compatibility */,
+.border-dotted-link {
+  border-bottom-style: dotted;
+  border-bottom-width: 1px;
+}
+
+/* Typography classes */
+.text-sm {
+  font-size: 12px;
+  line-height: 16px;
+  letter-spacing: -0.3px;
+}
+
+.text-md {
+  font-size: 13px;
+  line-height: 22px;
+  letter-spacing: -0.3px;
+}
+
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+}
+
+/* Fix for hover states */
+button,
+a,
+[role="button"] {
+  transition-property: background-color, border-color, color, opacity;
+  transition-duration: 150ms;
+  transition-timing-function: ease;
+}
+
+/* Ensure hover transitions don't include scale */
+a:hover,
+button:hover {
+  transform: none !important;
+}
+
+button:focus {
+  outline: none;
+}
+
+/* Project card variants */
+.project-card-standard,
+.project-card-tall {
+  display: flex;
+  flex-direction: column;
+}
+
+/* Add hover effect */
+.project-card-standard:hover,
+.project-card-tall:hover {
+  opacity: 0.9;
+}
+
+/* Project card image hover effect */
+.group:hover .group-hover\:opacity-10 {
+  opacity: 0.1;
+}
+
+/* Journal entry row separator */
+.journal-entry-row-separator {
+  border: none;
+  border-bottom: 0.5px solid var(--border-primary) !important;
+}
+
+/* Responsive adjustments for masonry grid */
+@media (max-width: 768px) {
+  .masonry-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 480px) {
+  .masonry-grid {
+    grid-template-columns: 1fr;
+  }
+}
