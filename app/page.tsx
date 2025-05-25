@@ -1,11 +1,77 @@
 "use client"
 
-import { useEffect, useState, useRef, useMemo } from "react"
+import { useEffect, useState, useRef, useMemo, Suspense } from "react"
 import { STYLES } from "@/constants"
 import { FadeIn } from "@/components/ui/fade-in"
 import ScrambleText from "@/components/ui/scramble-text"
 import CompanySection from "@/components/ui/company-section"
 import ProjectItem from "@/components/ui/project-item"
+
+// Memoize project data outside component to prevent recreation
+const PROJECT_DATA = {
+  harvey: [
+    {
+      key: "review-tables",
+      title: "Review Tables",
+      description: "I'm currently the design lead for Vault where I work on our multi-document review queries, data management and knowledge base features. I'm also the co-lead of Harvey's design system, which supports dozens of internal embedded product surfaces.",
+      imageUrl: "/dark-data-table.png",
+    },
+    {
+      key: "file-event-log",
+      title: "File Event Log",
+      description: "Real-time event log for file uploads, providing users with detailed tracking of document processing and system actions.",
+      imageUrl: "/dark-search-interface.png",
+    },
+    {
+      key: "vault-file-browser",
+      title: "Vault File Browser",
+      description: "Full-featured document management system with advanced search, filtering, and organization capabilities.",
+      imageUrl: "/futuristic-dashboard.png",
+    },
+  ],
+  arc: [
+    {
+      key: "arc-deposits",
+      title: "Deposits",
+      description: "Faster, easier deposits for Arc users with streamlined verification and instant access to funds.",
+      imageUrl: "/arc-deposits.jpg",
+    },
+    {
+      key: "arc-bill-pay",
+      title: "Bill Pay",
+      description: "Unified platform to capture, scan and automate invoice payments, reducing manual processing time by 60%.",
+      imageUrl: "/data-dashboard-dark.png",
+    },
+    {
+      key: "arc-notifications",
+      title: "Notifications",
+      description: "Action center with granular notification controls, allowing users to customize their alert preferences.",
+      imageUrl: "/command-icon.png",
+    },
+  ],
+  uber: [
+    {
+      key: "driving-onboarding",
+      title: "Driving Onboarding",
+      description: "Enhanced driver onboarding experience that improved completion rates by 23% through simplified document verification.",
+      imageUrl: "/dark-search-interface.png",
+    },
+    {
+      key: "en-route-delay",
+      title: "En-route Delay Notification",
+      description: "Helping bridge the rider-driver communication gap with real-time updates and transparent delay information.",
+      imageUrl: "/futuristic-dashboard.png",
+    },
+  ],
+  flexport: [
+    {
+      key: "freight-forwarding",
+      title: "Freight Forwarding App",
+      description: "Move shipments with realtime, actionable visibility across global supply chains, reducing tracking inquiries by 40%.",
+      imageUrl: "/data-dashboard-dark.png",
+    },
+  ],
+}
 
 export default function HomePage() {
   // Track if this component has been mounted before
@@ -22,87 +88,61 @@ export default function HomePage() {
     }
   }, [])
 
-  // Memoize the project items to prevent unnecessary re-renders
+  // Memoize project items with proper dependency tracking
   const harveyProjects = useMemo(
-    () => [
-      <ProjectItem
-        key="review-tables"
-        title="Review Tables"
-        description="I'm currently the design lead for Vault where I work on our multi-document review queries, data management and knowledge base features. I'm also the co-lead of Harvey's design system, which supports dozens of internal embedded product surfaces."
-        imageUrl="/dark-data-table.png"
-      />,
-      <ProjectItem
-        key="file-event-log"
-        title="File Event Log"
-        description="Real-time event log for file uploads, providing users with detailed tracking of document processing and system actions."
-        imageUrl="/dark-search-interface.png"
-      />,
-      <ProjectItem
-        key="vault-file-browser"
-        title="Vault File Browser"
-        description="Full-featured document management system with advanced search, filtering, and organization capabilities."
-        imageUrl="/futuristic-dashboard.png"
-      />,
-    ],
-    [],
+    () =>
+      PROJECT_DATA.harvey.map((project) => (
+        <ProjectItem
+          key={project.key}
+          title={project.title}
+          description={project.description}
+          imageUrl={project.imageUrl}
+        />
+      )),
+    []
   )
 
   const arcProjects = useMemo(
-    () => [
-      <ProjectItem
-        key="arc-deposits"
-        title="Deposits"
-        description="Faster, easier deposits for Arc users with streamlined verification and instant access to funds."
-        imageUrl="/arc-deposits.jpg"
-      />,
-      <ProjectItem
-        key="arc-bill-pay"
-        title="Bill Pay"
-        description="Unified platform to capture, scan and automate invoice payments, reducing manual processing time by 60%."
-        imageUrl="/data-dashboard-dark.png"
-      />,
-      <ProjectItem
-        key="arc-notifications"
-        title="Notifications"
-        description="Action center with granular notification controls, allowing users to customize their alert preferences."
-        imageUrl="/command-icon.png"
-      />,
-    ],
-    [],
+    () =>
+      PROJECT_DATA.arc.map((project) => (
+        <ProjectItem
+          key={project.key}
+          title={project.title}
+          description={project.description}
+          imageUrl={project.imageUrl}
+        />
+      )),
+    []
   )
 
   const uberProjects = useMemo(
-    () => [
-      <ProjectItem
-        key="driving-onboarding"
-        title="Driving Onboarding"
-        description="Enhanced driver onboarding experience that improved completion rates by 23% through simplified document verification."
-        imageUrl="/dark-search-interface.png"
-      />,
-      <ProjectItem
-        key="en-route-delay"
-        title="En-route Delay Notification"
-        description="Helping bridge the rider-driver communication gap with real-time updates and transparent delay information."
-        imageUrl="/futuristic-dashboard.png"
-      />,
-    ],
-    [],
+    () =>
+      PROJECT_DATA.uber.map((project) => (
+        <ProjectItem
+          key={project.key}
+          title={project.title}
+          description={project.description}
+          imageUrl={project.imageUrl}
+        />
+      )),
+    []
   )
 
   const flexportProjects = useMemo(
-    () => [
-      <ProjectItem
-        key="freight-forwarding"
-        title="Freight Forwarding App"
-        description="Move shipments with realtime, actionable visibility across global supply chains, reducing tracking inquiries by 40%."
-        imageUrl="/data-dashboard-dark.png"
-      />,
-    ],
-    [],
+    () =>
+      PROJECT_DATA.flexport.map((project) => (
+        <ProjectItem
+          key={project.key}
+          title={project.title}
+          description={project.description}
+          imageUrl={project.imageUrl}
+        />
+      )),
+    []
   )
 
   return (
-    <>
+    <Suspense fallback={<div className="min-h-screen flex items-center justify-center">Loading...</div>}>
       {/* Info Section */}
       <section className="">
         <div className="mx-auto max-w-[872px] py-8">
@@ -197,6 +237,6 @@ export default function HomePage() {
           <CompanySection date="2019 - 2020" company="Flexport" delay={16} projects={flexportProjects} />
         </div>
       </section>
-    </>
+    </Suspense>
   )
 }

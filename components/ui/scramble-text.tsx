@@ -1,6 +1,6 @@
 "use client"
 
-import { useEffect, useRef } from "react"
+import { useEffect, useRef, useCallback } from "react"
 import { useScramble } from "use-scramble"
 
 interface ScrambleTextProps {
@@ -11,6 +11,7 @@ interface ScrambleTextProps {
 
 export default function ScrambleText({ text, className = "", delay = 0 }: ScrambleTextProps) {
   const hasAnimated = useRef(false)
+  const timeoutRef = useRef<ReturnType<typeof setTimeout>>()
 
   const { ref, replay } = useScramble({
     text,
@@ -21,18 +22,36 @@ export default function ScrambleText({ text, className = "", delay = 0 }: Scramb
     seed: 0,
     chance: 0.8,
     overdrive: false,
+    overflow: true,
   })
 
-  useEffect(() => {
+  const startAnimation = useCallback(() => {
     if (!hasAnimated.current) {
-      const timer = setTimeout(() => {
+      timeoutRef.current = setTimeout(() => {
         replay()
         hasAnimated.current = true
       }, delay)
-
-      return () => clearTimeout(timer)
     }
   }, [delay, replay])
 
-  return <span ref={ref} className={className}></span>
+  useEffect(() => {
+    startAnimation()
+    
+    return () => {
+      if (timeoutRef.current) {
+        clearTimeout(timeoutRef.current)
+      }
+    }
+  }, [startAnimation])
+
+  return (
+    <span 
+      ref={ref} 
+      className={className}
+      style={{ 
+        willChange: 'transform, opacity',
+        backfaceVisibility: 'hidden'
+      }}
+    />
+  )
 }

@@ -28,17 +28,17 @@ export function FadeIn({
     const directionProps = (() => {
       switch (direction) {
         case "up":
-          return { y: distance }
+          return { transform: `translateY(${distance}px)` }
         case "down":
-          return { y: -distance }
+          return { transform: `translateY(-${distance}px)` }
         case "left":
-          return { x: distance }
+          return { transform: `translateX(${distance}px)` }
         case "right":
-          return { x: -distance }
+          return { transform: `translateX(-${distance}px)` }
         case "none":
           return {}
         default:
-          return { y: distance }
+          return { transform: `translateY(${distance}px)` }
       }
     })()
 
@@ -53,11 +53,11 @@ export function FadeIn({
     return isInView
       ? {
           opacity: 1,
-          x: 0,
-          y: 0,
+          transform: "translate(0, 0)",
           transition: {
             duration: 0.3,
             delay: delay * 0.1,
+            ease: "easeOut",
           },
         }
       : initialProps
@@ -69,7 +69,12 @@ export function FadeIn({
       initial={initialProps}
       animate={animateProps}
       className={className}
-      style={{ border: "none", outline: "none", boxShadow: "none" }}
+      style={{ 
+        border: "none", 
+        outline: "none", 
+        boxShadow: "none",
+        willChange: "transform, opacity"
+      }}
     >
       {children}
     </motion.div>
